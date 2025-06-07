@@ -24,10 +24,12 @@ class Account {
 
   deposit(val) {
     this.#movements.push(val);
+    return this;
   }
 
   withdraw(val) {
     this.deposit(-val);
+    return this;
   }
 
   #approveLoan(val) {
@@ -35,10 +37,12 @@ class Account {
   }
 
   requestLoan(val) {
-    if (this.approveLoan(val)) {
+    if (this.#approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan approved`);
     }
+
+    return this;
   }
 
   static test() {
@@ -47,10 +51,16 @@ class Account {
 }
 
 const acc1 = new Account('Eph', 'USD', 1111);
-acc1.deposit(300);
-acc1.withdraw(100);
-// acc1.movements = [];
+// acc1.deposit(300);
+// acc1.withdraw(100);
+const movements = acc1
+  .deposit(300)
+  .withdraw(100)
+  .withdraw(50)
+  .requestLoan(25000)
+  .withdraw(4000);
+// .getMovements()
 
 console.log(acc1);
 // acc1.#approveLoan();
-Account.test();
+console.log(movements);
